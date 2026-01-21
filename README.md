@@ -5,26 +5,30 @@ SWMS is an intelligent system designed to monitor and manage water resources eff
 
 ## Architecture
 The project is divided into two main components:
-- **Frontend**: Built with React and Vite for a modern, responsive user interface.
-- **Backend**: Built with Python and FastAPI to handle data processing, AI model integration, and API requests.
+- **Frontend**: Built with **Vanilla HTML/CSS/JS** for a lightweight, premium, and zero-dependency interface.
+- **Backend**: Built with **Python and FastAPI** to handle data processing, AI model integration, and API requests.
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v18+)
-- Python (v3.9+)
+- **Python (v3.9+)** (Required for Backend)
 
-### Installation
+### Quick Start (Windows)
+Double-click `setup_and_run.bat` to automatically install backend dependencies and launch the system.
 
-#### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### Manual Installation
 
-#### Backend
-```bash
-cd backend
-# Instructions to be added
-```
+#### Backend (API)
+1.  Open terminal in `backend/` folder.
+2.  Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  Run the server:
+    ```bash
+    uvicorn main:app --reload
+    ```
+
+#### Frontend (Website)
+1.  Go to the `frontend/` folder.
+2.  Double-click `index.html` to open it in your browser.
