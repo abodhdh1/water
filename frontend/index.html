@@ -30,10 +30,12 @@
             </div>
 
             <ul class="nav-links">
-                <li class="active"><a href="#"><i data-lucide="layout-grid"></i> Overview</a></li>
-                <li><a href="#"><i data-lucide="map"></i> Sector Map</a></li>
-                <li><a href="#"><i data-lucide="sliders"></i> Controls</a></li>
-                <li><a href="#"><i data-lucide="file-warning"></i> Incident Log</a></li>
+                <li class="nav-item active" data-view="overview"><a href="#"><i data-lucide="layout-grid"></i>
+                        Overview</a></li>
+                <li class="nav-item" data-view="map"><a href="#"><i data-lucide="map"></i> Sector Map</a></li>
+                <li class="nav-item" data-view="controls"><a href="#"><i data-lucide="sliders"></i> Controls</a></li>
+                <li class="nav-item" data-view="logs"><a href="#"><i data-lucide="file-warning"></i> Incident Log</a>
+                </li>
             </ul>
 
             <div class="system-status-panel">
@@ -49,126 +51,174 @@
         <main class="main-content">
             <header class="top-bar">
                 <div class="breadcrumb">
-                    <i data-lucide="chevron-right"></i> MAIN_GRID // REAL_TIME_MONITORING
+                    <i data-lucide="chevron-right"></i> <span id="page-title">MAIN_GRID // OVERVIEW</span>
                 </div>
                 <div class="clock" id="world-clock">00:00:00 UTC</div>
             </header>
 
-            <div class="command-grid">
-                <!-- LEFT COLUMN: MAP & SENSORS -->
-                <div class="grid-col-left">
-                    <!-- Sector Map Card -->
-                    <div class="card map-card">
-                        <div class="card-header">
-                            <h3><i data-lucide="map-pin"></i> INFRASTRUCTURE MAP</h3>
-                            <span class="status-badge" id="map-status">LIVE</span>
+            <!-- VIEW: OVERVIEW -->
+            <section id="view-overview" class="view-section active">
+                <div class="command-grid">
+                    <!-- LEFT COLUMN: MAP & SENSORS -->
+                    <div class="grid-col-left">
+                        <!-- Key Metrics (KPIs) -->
+                        <div class="kpi-grid">
+                            <div class="card kpi-card">
+                                <span class="label">SYS PRESSURE</span>
+                                <div class="value-group">
+                                    <span class="value" id="pressure-val">0.0</span>
+                                    <span class="unit">PSI</span>
+                                </div>
+                            </div>
+                            <div class="card kpi-card">
+                                <span class="label">FLOW RATE</span>
+                                <div class="value-group">
+                                    <span class="value" id="flow-val">0.0</span>
+                                    <span class="unit">L/m</span>
+                                </div>
+                            </div>
+                            <div class="card kpi-card danger">
+                                <span class="label">ACTIVE ALERTS</span>
+                                <div class="value-group">
+                                    <span class="value text-red" id="alert-val">0</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="map-visualizer" id="sector-map">
-                            <!-- Visual Zones (Pump Station, Distribution, Treatment) -->
-                            <div class="zone zone-1" title="Pump Station Alpha">
-                                <i data-lucide="fan"></i>
+
+                        <!-- Mini Map Preview -->
+                        <div class="card map-card">
+                            <div class="card-header">
+                                <h3><i data-lucide="map-pin"></i> INFRASTRUCTURE MAP</h3>
+                                <span class="status-badge" id="map-status">LIVE</span>
                             </div>
-                            <div class="pipe pipe-1"></div>
-                            <div class="zone zone-2" title="Main Tank Reservoir">
-                                <i data-lucide="cylinder"></i>
-                                <div class="water-level-indicator"></div>
-                            </div>
-                            <div class="pipe pipe-2"></div>
-                            <div class="zone zone-3" title="City Distribution">
-                                <i data-lucide="building-2"></i>
+                            <div class="map-visualizer" id="sector-map">
+                                <!-- Visual Zones -->
+                                <div class="zone zone-1" title="Pump Station Alpha">
+                                    <div class="zone-label">PUMP STN</div>
+                                    <i data-lucide="fan"></i>
+                                    <div class="status-ring"></div>
+                                </div>
+                                <div class="pipe pipe-1">
+                                    <div class="flow-particles"></div>
+                                </div>
+                                <div class="zone zone-2" title="Main Tank Reservoir">
+                                    <div class="zone-label">RESERVOIR</div>
+                                    <i data-lucide="cylinder"></i>
+                                    <div class="water-level-visual">
+                                        <div class="wave"></div>
+                                    </div>
+                                </div>
+                                <div class="pipe pipe-2">
+                                    <div class="flow-particles"></div>
+                                </div>
+                                <div class="zone zone-3" title="City Distribution">
+                                    <div class="zone-label">DISTRIBUTION</div>
+                                    <i data-lucide="building-2"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Key Metrics (KPIs) -->
-                    <div class="kpi-grid">
-                        <div class="card kpi-card">
-                            <span class="label">SYS PRESSURE</span>
-                            <div class="value-group">
-                                <span class="value" id="pressure-val">0.0</span>
-                                <span class="unit">PSI</span>
+                    <!-- RIGHT COLUMN: CONTROLS & ANALYTICS -->
+                    <div class="grid-col-right">
+                        <!-- Manual Controls -->
+                        <div class="card control-panel">
+                            <div class="card-header">
+                                <h3><i data-lucide="settings-2"></i> MANUAL OVERRIDE</h3>
                             </div>
-                            <div class="mini-chart" id="pressure-sparkline"></div>
-                        </div>
-                        <div class="card kpi-card">
-                            <span class="label">FLOW RATE</span>
-                            <div class="value-group">
-                                <span class="value" id="flow-val">0.0</span>
-                                <span class="unit">L/m</span>
+                            <div class="control-group">
+                                <div class="control-item">
+                                    <label>MAIN PUMP (P-101)</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="btn-pump-main">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="control-item">
+                                    <label>AUX PUMP (P-102)</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="btn-pump-aux">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="control-item">
+                                    <label>EMERGENCY VALVE</label>
+                                    <label class="switch danger">
+                                        <input type="checkbox" id="btn-valve-emergency">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div class="card kpi-card danger">
-                            <span class="label">ACTIVE ALERTS</span>
-                            <div class="value-group">
-                                <span class="value text-red" id="alert-val">0</span>
+
+                        <!-- Charts Area -->
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3><i data-lucide="bar-chart-2"></i> HYDRAULIC ANALYTICS</h3>
+                            </div>
+                            <div class="canvas-container">
+                                <canvas id="mainChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Simulation Events -->
+                        <div class="card events-card">
+                            <div class="card-header">
+                                <h3><i data-lucide="zap"></i> SIMULATION EVENTS</h3>
+                            </div>
+                            <div class="button-grid">
+                                <button class="event-btn warning" onclick="sim.triggerLeak()">TRIGGER LEAK</button>
+                                <button class="event-btn info" onclick="sim.rainEvent()">HEAVY RAIN</button>
+                                <button class="event-btn success" onclick="sim.stabilize()">STABILIZE</button>
+                            </div>
+                            <div class="log-console" id="console-log">
+                                <p class="log-line">System initialized.</p>
+                                <p class="log-line">Waiting for operator input...</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <!-- RIGHT COLUMN: CONTROLS & ANALYTICS -->
-                <div class="grid-col-right">
-                    <!-- Manual Controls -->
-                    <div class="card control-panel">
-                        <div class="card-header">
-                            <h3><i data-lucide="settings-2"></i> MANUAL OVERRIDE</h3>
-                        </div>
-                        <div class="control-group">
-                            <div class="control-item">
-                                <label>MAIN PUMP (P-101)</label>
-                                <label class="switch">
-                                    <input type="checkbox" id="btn-pump-main">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                            <div class="control-item">
-                                <label>AUX PUMP (P-102)</label>
-                                <label class="switch">
-                                    <input type="checkbox" id="btn-pump-aux">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                            <div class="control-item">
-                                <label>EMERGENCY VALVE</label>
-                                <label class="switch danger">
-                                    <input type="checkbox" id="btn-valve-emergency">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
+            <!-- VIEW: MAP (Placeholder for full map view) -->
+            <section id="view-map" class="view-section">
+                <div class="card full-height">
+                    <div class="card-header">
+                        <h3>FULL SECTOR MAP</h3>
                     </div>
-
-                    <!-- Charts Area -->
-                    <div class="card chart-card">
-                        <div class="card-header">
-                            <h3><i data-lucide="bar-chart-2"></i> HYDRAULIC ANALYTICS</h3>
-                            <div class="chart-toggles">
-                                <button class="active">Pressure</button>
-                                <button>Flow</button>
-                            </div>
-                        </div>
-                        <div class="canvas-container">
-                            <canvas id="mainChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Simulation Events -->
-                    <div class="card events-card">
-                        <div class="card-header">
-                            <h3><i data-lucide="zap"></i> SIMULATION EVENTS</h3>
-                        </div>
-                        <div class="button-grid">
-                            <button class="event-btn warning" onclick="sim.triggerLeak()">TRIGGER LEAK</button>
-                            <button class="event-btn info" onclick="sim.rainEvent()">HEAVY RAIN</button>
-                            <button class="event-btn success" onclick="sim.stabilize()">STABILIZE</button>
-                        </div>
-                        <div class="log-console" id="console-log">
-                            <p class="log-line">System initialized.</p>
-                            <p class="log-line">Waiting for operator input...</p>
-                        </div>
+                    <div class="placeholder-content">
+                        <i data-lucide="map" size="48"></i>
+                        <p>Detailed GIS Map View would go here.</p>
+                        <p class="sub-text">(Using Overview Map for Demo)</p>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- VIEW: CONTROLS (Placeholder) -->
+            <section id="view-controls" class="view-section">
+                <div class="card full-height">
+                    <div class="card-header">
+                        <h3>ADVANCED CONTROLS</h3>
+                    </div>
+                    <div class="placeholder-content">
+                        <i data-lucide="sliders" size="48"></i>
+                        <p>Advanced PLC Configuration.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: LOGS (Placeholder) -->
+            <section id="view-logs" class="view-section">
+                <div class="card full-height">
+                    <div class="card-header">
+                        <h3>INCIDENT LOGS</h3>
+                    </div>
+                    <div class="log-console full-console" id="full-log">
+                        <!-- Duplicated logs -->
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
