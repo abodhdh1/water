@@ -29,22 +29,15 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
-echo [2/4] Starting Backend Server...
+echo [2/3] Starting Backend Server...
 start "SWMS Backend" cmd /k "uvicorn main:app --reload"
 
-echo [3/4] Installing Frontend Dependencies...
-cd ../frontend
-call npm install
-if %errorlevel% neq 0 (
-    echo [ERROR] Failed to install Node.js dependencies.
-    pause
-    exit /b
-)
-
-echo [4/4] Starting Frontend...
+echo [3/3] Opening Frontend...
 echo.
 echo The application should open in your browser shortly...
 echo.
-call npm run dev
+cd ../frontend
+start index.html
 
 pause
+
